@@ -32,7 +32,7 @@ public class EquipementRepository implements Repository<Equipement> {
     }
 
     @Override
-    public Equipement getById(int equipementId) {
+    public Equipement getById(Long equipementId) {
         Transaction tx = null;
         Equipement equipement = null;
         SessionFactory factory = HibernateUtil.getSessionFactory();
@@ -74,21 +74,17 @@ public class EquipementRepository implements Repository<Equipement> {
     }
 
     @Override
-    public boolean delete(Long equipementId) throws SQLException {
+    public boolean delete(Equipement equipement) throws SQLException {
         Transaction tx = null;
-        Equipement equipement = null;
         SessionFactory factory = HibernateUtil.getSessionFactory();
         try (Session session = factory.openSession()) {
 
             tx = session.beginTransaction();
-            if (equipement != null) {
-                session.delete(equipement);
-                System.out.println("equipement is deleted");
-                return true;
-            }
+            session.delete(equipement);
             tx.commit();
 
             session.close();
+            return true;
         } catch (Exception e) {
             if (tx != null) {
                 tx.rollback();
@@ -106,9 +102,11 @@ public class EquipementRepository implements Repository<Equipement> {
 
             // start a tx
             tx = session.beginTransaction();
-            // save the student object
-            session.saveOrUpdate(equipement);
-            // commit tx
+            if (equipement != null) {
+                // save the student object
+                session.saveOrUpdate(equipement);
+                System.out.println("equipement is updated");
+            }
             tx.commit();
 
             session.close();

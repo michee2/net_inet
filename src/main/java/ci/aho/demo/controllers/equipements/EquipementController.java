@@ -78,7 +78,7 @@ public class EquipementController extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter("id"));
         Equipement existingEquipement = equipementRepository.getById(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("views/equipement-form.jsp");
         request.setAttribute("equipement", existingEquipement);
@@ -94,9 +94,10 @@ public class EquipementController extends HttpServlet {
     }
 
     private void updateEquipement(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        String site = request.getParameter("site");
-        String etat = request.getParameter("etat");
-        Equipement updateEquipement = new Equipement(site, etat);
+        Long id = Long.parseLong(request.getParameter("id"));
+        Equipement updateEquipement = equipementRepository.getById(id);
+        updateEquipement.setEtat(request.getParameter("etat"));
+        updateEquipement.setSite(request.getParameter("site"));
 
         equipementRepository.update(updateEquipement);
 
@@ -105,7 +106,11 @@ public class EquipementController extends HttpServlet {
 
     private void deleteEquipement(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
-        equipementRepository.delete(id);
-        response.sendRedirect("list");
+        boolean bool = equipementRepository.delete(equipementRepository.getById(id));
+
+        if (bool) {
+            response.sendRedirect("list");
+        }
+
     }
 }

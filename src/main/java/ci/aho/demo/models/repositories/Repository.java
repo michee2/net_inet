@@ -6,11 +6,11 @@ import java.util.List;
 public interface Repository<T>{
     void create(T t) throws SQLException;
 
-    T getById(int id);
+    T getById(Long id);
 
     List<T> getAll();
 
-    boolean delete(Long i) throws SQLException;
+    boolean delete(T t) throws SQLException;
 
     void update(T t) throws SQLException;
 }
