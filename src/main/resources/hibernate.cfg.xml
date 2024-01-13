@@ -10,7 +10,7 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">postgres</property>
 
-        <!-- JDBC connection pool settings ... using built-in test pools
+        <!-- JDBC connection pool settings ... using built-in test pool
         <property name="connection.pool_size">1</property> -->
 
         <!-- dbcp connection pool configuration
